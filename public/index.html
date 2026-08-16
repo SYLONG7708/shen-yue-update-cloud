@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#08131d">
+  <meta name="description" content="申悅更新中心永久雲端一鍵上傳">
+  <title>申悅更新中心｜永久雲端一鍵上傳</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">SHEN YUE CLOUD UPLOADER</p>
+        <h1>申悅更新中心</h1>
+        <p class="subtitle">永久雲端一鍵上傳</p>
+      </div>
+      <div class="cloud-badge"><span></span> 主機關機仍可使用</div>
+    </header>
+
+    <section class="notice" data-connection-status aria-live="polite">
+      <span class="notice-dot"></span>
+      <strong>等待連線</strong>
+      <small>正在檢查雲端服務</small>
+    </section>
+
+    <section class="auth-card" data-auth-card hidden>
+      <div>
+        <p class="section-kicker">安全驗證</p>
+        <h2>輸入上傳密鑰</h2>
+        <p>密鑰只保留在這個分頁；不會寫入公開網頁。</p>
+      </div>
+      <form data-auth-form>
+        <input name="uploadKey" type="password" autocomplete="off" placeholder="貼上 URL 密鑰" required>
+        <button type="submit">連線雲端</button>
+      </form>
+    </section>
+
+    <div class="workspace" data-workspace hidden>
+      <section class="upload-card">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">UPLOAD &amp; SYNC</p>
+            <h2>新增或替換 APK</h2>
+          </div>
+          <span class="step-pill">自動同步 3 個雲端位置</span>
+        </div>
+
+        <form class="upload-form" data-upload-form>
+          <fieldset class="mode-grid">
+            <legend>選擇動作</legend>
+            <label class="mode-option is-selected">
+              <input type="radio" name="mode" value="replace" checked>
+              <span class="mode-icon">↻</span>
+              <strong>替換既有 APK</strong>
+              <small>沿用項目與下載檔名</small>
+            </label>
+            <label class="mode-option">
+              <input type="radio" name="mode" value="create">
+              <span class="mode-icon">＋</span>
+              <strong>新增 App</strong>
+              <small>建立新的更新項目</small>
+            </label>
+          </fieldset>
+
+          <div class="form-grid">
+            <label data-target-field>
+              <span>替換目標</span>
+              <select name="itemId" data-target-select>
+                <option value="">自動依 APK 套件判斷</option>
+              </select>
+            </label>
+            <label>
+              <span>Release 檔名（可留空）</span>
+              <input name="assetName" type="text" placeholder="自動沿用或產生安全檔名">
+            </label>
+          </div>
+
+          <div class="create-fields" data-create-fields hidden>
+            <label><span>App 顯示名稱</span><input name="appName" type="text" placeholder="未填會讀取 APK"></label>
+            <label><span>分類</span><input name="category" type="text" placeholder="例如：影音播放"></label>
+            <label class="wide"><span>App 介紹</span><textarea name="description" rows="3" placeholder="未填會自動產生"></textarea></label>
+            <label><span>圖標網址（可留空）</span><input name="iconUrl" type="url" inputmode="url" placeholder="https://..."></label>
+            <label><span>詳情圖片網址（可留空）</span><input name="imageUrl" type="url" inputmode="url" placeholder="https://..."></label>
+            <label class="wide"><span>更新說明</span><textarea name="changelog" rows="3" placeholder="一行一條"></textarea></label>
+          </div>
+
+          <div class="files-grid">
+            <label class="file-zone apk-zone" data-apk-zone>
+              <input name="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" required>
+              <span class="file-symbol">APK</span>
+              <strong data-apk-title>選擇 APK</strong>
+              <small data-apk-meta>支援大型檔案，會自動分段上傳</small>
+            </label>
+            <label class="file-zone icon-zone">
+              <input name="iconFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+              <span class="file-symbol image">IMG</span>
+              <strong data-icon-title>選擇圖標（選填）</strong>
+              <small data-icon-meta>PNG／JPG／WEBP／GIF</small>
+            </label>
+          </div>
+
+          <button class="primary-action" type="submit" data-submit-button>
+            <span>一鍵上傳並同步</span>
+            <small>GitHub Release・雙清單・Apps Script</small>
+          </button>
+        </form>
+
+        <section class="progress-card" data-progress-card hidden aria-live="polite">
+          <div class="progress-copy">
+            <strong data-progress-title>準備上傳</strong>
+            <span data-progress-percent>0%</span>
+          </div>
+          <div class="progress-track"><span data-progress-bar></span></div>
+          <p data-progress-detail>正在建立安全分段...</p>
+        </section>
+
+        <section class="result-card" data-result-card hidden aria-live="polite">
+          <strong data-result-title>執行結果</strong>
+          <pre data-result-output></pre>
+        </section>
+      </section>
+
+      <aside class="side-column">
+        <section class="side-card">
+          <div class="side-head">
+            <div><p class="section-kicker">LIVE MANIFEST</p><h2>目前清單</h2></div>
+            <span data-app-count>0</span>
+          </div>
+          <div class="app-list" data-app-list></div>
+        </section>
+        <section class="side-card health-card">
+          <p class="section-kicker">CLOUD HEALTH</p>
+          <h2>服務狀態</h2>
+          <dl data-health-list>
+            <div><dt>Netlify 後端</dt><dd>檢查中</dd></div>
+            <div><dt>GitHub Release</dt><dd>檢查中</dd></div>
+            <div><dt>Apps Script</dt><dd>檢查中</dd></div>
+          </dl>
+          <button class="text-button" type="button" data-refresh-button>重新整理狀態</button>
+        </section>
+      </aside>
+    </div>
+  </main>
+  <footer>申悅車機助手・永久雲端更新服務</footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

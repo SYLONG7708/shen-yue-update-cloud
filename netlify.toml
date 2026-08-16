@@ -1,0 +1,56 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["node_modules/@devicefarmer/adbkit-apkreader/**"]
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "no-referrer"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data: blob: https://sylong7708.github.io; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+
+[[headers]]
+  for = "/app.js"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+
+[[headers]]
+  for = "/styles.css"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+
+[[redirects]]
+  from = "/api/status"
+  to = "/.netlify/functions/status"
+  status = 200
+
+[[redirects]]
+  from = "/api/upload-chunk"
+  to = "/.netlify/functions/upload-chunk"
+  status = 200
+
+[[redirects]]
+  from = "/api/start-upload"
+  to = "/.netlify/functions/start-upload"
+  status = 200
+
+[[redirects]]
+  from = "/api/job-status"
+  to = "/.netlify/functions/job-status"
+  status = 200
+
+[[redirects]]
+  from = "/api/worker-download"
+  to = "/.netlify/functions/worker-download"
+  status = 200
+
+[[redirects]]
+  from = "/api/worker-job-update"
+  to = "/.netlify/functions/worker-job-update"
+  status = 200

@@ -1,0 +1,21 @@
+{
+  "name": "shen-yue-update-cloud",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "申悅更新中心永久雲端一鍵上傳",
+  "scripts": {
+    "check": "node --check public/app.js && node --check netlify/functions/status.mjs && node --check netlify/functions/upload-chunk.mjs && node --check netlify/functions/start-upload.mjs && node --check netlify/functions/job-status.mjs && node --check netlify/functions/worker-download.mjs && node --check netlify/functions/worker-job-update.mjs && node --check tools/cloud-worker.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@devicefarmer/adbkit-apkreader": "3.2.4",
+    "@netlify/blobs": "^10.5.0"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^4.2.5"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
