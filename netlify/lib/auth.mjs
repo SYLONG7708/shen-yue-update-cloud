@@ -22,7 +22,7 @@ export function requireUploadKey(request) {
   const expected = requiredEnv("SHENYUE_UPLOAD_KEY");
   const actual = readUploadKey(request);
   if (!actual || !safeEqual(actual, expected)) {
-    const error = new Error("上傳密鑰不正確，無法使用雲端服務。");
+    const error = new Error("管理密碼不正確，無法使用雲端服務。");
     error.statusCode = 401;
     throw error;
   }

@@ -1,5 +1,6 @@
 param(
-  [string]$AppsScriptEndpoint = "https://script.google.com/macros/s/AKfycbwrUCUeksZrWOUSDrdKgUGTS1JIPRX3c18PIKgZu_j64jBZGXjI7rnHTFjmIqUljZFzeg/exec"
+  [string]$AppsScriptEndpoint = "https://script.google.com/macros/s/AKfycbwrUCUeksZrWOUSDrdKgUGTS1JIPRX3c18PIKgZu_j64jBZGXjI7rnHTFjmIqUljZFzeg/exec",
+  [string]$UploadPassword = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,14 +14,18 @@ $temporaryEnv = Join-Path $deployDir ".netlify-env-import.tmp"
 $temporaryLog = Join-Path $deployDir ".netlify-env-import.log"
 $uploadKeyPath = Join-Path $deployDir "upload-key.txt"
 
-$bytes = New-Object byte[] 24
-$rng = [Security.Cryptography.RandomNumberGenerator]::Create()
-try {
-  $rng.GetBytes($bytes)
-} finally {
-  $rng.Dispose()
+if ($UploadPassword) {
+  $uploadKey = $UploadPassword
+} else {
+  $bytes = New-Object byte[] 24
+  $rng = [Security.Cryptography.RandomNumberGenerator]::Create()
+  try {
+    $rng.GetBytes($bytes)
+  } finally {
+    $rng.Dispose()
+  }
+  $uploadKey = ([BitConverter]::ToString($bytes)).Replace("-", "").ToLowerInvariant()
 }
-$uploadKey = ([BitConverter]::ToString($bytes)).Replace("-", "").ToLowerInvariant()
 $githubToken = (& gh auth token).Trim()
 if (-not $githubToken) {
   throw "New GitHub token unavailable."

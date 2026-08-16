@@ -1,6 +1,6 @@
 const CHUNK_SIZE = 3 * 1024 * 1024;
 const MAX_FILE_SIZE = 2 * 1024 * 1024 * 1024 - 1024;
-const KEY_STORAGE = "shenYueCloudUploadKey";
+const PASSWORD_STORAGE = "shenYueCloudUploadPassword";
 
 const qs = (selector) => document.querySelector(selector);
 const form = qs("[data-upload-form]");
@@ -25,7 +25,7 @@ const resultOutput = qs("[data-result-output]");
 const submitButton = qs("[data-submit-button]");
 const apkInput = form.elements.apkFile;
 const iconInput = form.elements.iconFile;
-let uploadKey = "";
+let uploadPassword = "";
 let currentApps = [];
 
 function escapeHtml(value) {
@@ -79,15 +79,13 @@ function showResult(ok, title, payload) {
   resultOutput.textContent = typeof payload === "string" ? payload : JSON.stringify(payload, null, 2);
 }
 
-function getKeyFromLocation() {
-  const query = new URLSearchParams(location.search);
-  const hash = new URLSearchParams(location.hash.replace(/^#/, ""));
-  return (query.get("key") || query.get("k") || hash.get("key") || sessionStorage.getItem(KEY_STORAGE) || "").trim();
+function getPasswordFromSession() {
+  return (sessionStorage.getItem(PASSWORD_STORAGE) || "").trim();
 }
 
 function apiFetch(path, options = {}) {
   const headers = new Headers(options.headers || {});
-  headers.set("X-Upload-Key", uploadKey);
+  headers.set("X-Upload-Key", uploadPassword);
   headers.set("Accept", "application/json");
   return fetch(path, { ...options, headers, cache: "no-store" });
 }
@@ -278,8 +276,8 @@ async function submitUpload(event) {
 
 authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  uploadKey = authForm.elements.uploadKey.value.trim();
-  sessionStorage.setItem(KEY_STORAGE, uploadKey);
+  uploadPassword = authForm.elements.uploadKey.value.trim();
+  sessionStorage.setItem(PASSWORD_STORAGE, uploadPassword);
   try { await loadStatus(); } catch { /* 畫面已顯示錯誤 */ }
 });
 
@@ -293,12 +291,12 @@ const apkZone = qs("[data-apk-zone]");
 ["dragenter", "dragover"].forEach((name) => apkZone.addEventListener(name, () => apkZone.classList.add("drag")));
 ["dragleave", "drop"].forEach((name) => apkZone.addEventListener(name, () => apkZone.classList.remove("drag")));
 
-uploadKey = getKeyFromLocation();
+uploadPassword = getPasswordFromSession();
 updateMode();
-if (uploadKey) {
-  sessionStorage.setItem(KEY_STORAGE, uploadKey);
+if (uploadPassword) {
+  sessionStorage.setItem(PASSWORD_STORAGE, uploadPassword);
   loadStatus().catch(() => {});
 } else {
   authCard.hidden = false;
-  setConnection("需要上傳密鑰", "請使用含密鑰的私人網址，或在下方輸入", "error");
+  setConnection("需要管理密碼", "請在下方輸入密碼以使用一鍵上傳", "error");
 }

@@ -7,14 +7,14 @@
 ## 架構
 
 1. 瀏覽器把 APK 切成 3 MB 安全分段。
-2. Netlify Functions 驗證私密上傳鑰匙，分段存入 Netlify Blobs。
+2. Netlify Functions 驗證管理密碼，分段存入 Netlify Blobs。
 3. Netlify 建立工作並透過 GitHub API 觸發本儲存庫的 GitHub Actions。
 4. GitHub 雲端工人重組 APK、解析 Android Manifest、計算 SHA-256。
 5. APK 串流上傳到 `SYLONG7708/update` 的 `apk-cloud` Release。
 6. 同步 `SYLONG7708/update/updates.json`、`SYLONG7708/shen-yue-iphone-assistant/updates.json` 與 Apps Script。
 7. 網頁輪詢工作狀態並顯示完成或錯誤訊息。
 
-GitHub 權杖與上傳鑰匙只存放在 Netlify 環境變數及 GitHub Actions Secrets，不會寫入 Git、HTML 或前端 JavaScript。
+GitHub 權杖與管理密碼只存放在 Netlify 環境變數及 GitHub Actions Secrets，不會寫入 Git、HTML 或前端 JavaScript。
 
 ## 必要設定
 
@@ -50,4 +50,4 @@ npx netlify dev
 npx netlify deploy --prod
 ```
 
-請勿把 token 或上傳鑰匙放進檔案、命令紀錄或公開網址。可用 `tools/import-netlify-secrets.ps1` 同步更新 Netlify 與 GitHub Actions Secrets。
+請勿把 token 或管理密碼放進程式碼、命令紀錄或公開網址。可用 `tools/import-netlify-secrets.ps1 -UploadPassword '<新密碼>'` 同步更新 Netlify 與 GitHub Actions Secrets。
