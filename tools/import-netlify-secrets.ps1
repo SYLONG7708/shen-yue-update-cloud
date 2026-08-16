@@ -33,6 +33,7 @@ $lines = @(
   "GITHUB_OWNER=SYLONG7708",
   "GITHUB_UPDATE_REPO=update",
   "GITHUB_ASSISTANT_REPO=shen-yue-iphone-assistant",
+  "GITHUB_WORKER_REPO=shen-yue-update-cloud",
   "GITHUB_RELEASE_TAG=apk-cloud"
 )
 
@@ -69,6 +70,13 @@ try {
   }
 }
 
+$uploadKey | & gh secret set SHENYUE_UPLOAD_KEY --repo SYLONG7708/shen-yue-update-cloud
+if ($LASTEXITCODE -ne 0) { throw "GitHub SHENYUE_UPLOAD_KEY secret update failed." }
+$githubToken | & gh secret set CLOUD_SYNC_TOKEN --repo SYLONG7708/shen-yue-update-cloud
+if ($LASTEXITCODE -ne 0) { throw "GitHub CLOUD_SYNC_TOKEN secret update failed." }
+$AppsScriptEndpoint | & gh secret set APPS_SCRIPT_ENDPOINT --repo SYLONG7708/shen-yue-update-cloud
+if ($LASTEXITCODE -ne 0) { throw "GitHub APPS_SCRIPT_ENDPOINT secret update failed." }
+
 [pscustomobject]@{
   Imported = $true
   VariableNames = @(
@@ -78,6 +86,7 @@ try {
     "GITHUB_OWNER",
     "GITHUB_UPDATE_REPO",
     "GITHUB_ASSISTANT_REPO",
+    "GITHUB_WORKER_REPO",
     "GITHUB_RELEASE_TAG"
   )
   UploadKeyFile = $uploadKeyPath
