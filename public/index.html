@@ -54,7 +54,7 @@
               <input type="radio" name="mode" value="replace" checked>
               <span class="mode-icon">↻</span>
               <strong>替換既有 APK</strong>
-              <small>沿用項目與下載檔名</small>
+              <small>可修改顯示名稱；留空才沿用</small>
             </label>
             <label class="mode-option">
               <input type="radio" name="mode" value="create">
@@ -75,10 +75,14 @@
               <span>Release 檔名（可留空）</span>
               <input name="assetName" type="text" placeholder="自動沿用或產生安全檔名">
             </label>
+            <label class="wide">
+              <span>App 顯示名稱（可修改）</span>
+              <input name="appName" type="text" maxlength="90" placeholder="輸入新名稱；留空時替換沿用原名，新增讀取 APK 名稱">
+              <small class="field-help">替換既有 APK 時可直接輸入新名稱；只有留空才會保留目前名稱。</small>
+            </label>
           </div>
 
           <div class="create-fields" data-create-fields hidden>
-            <label><span>App 顯示名稱</span><input name="appName" type="text" placeholder="未填會讀取 APK"></label>
             <label><span>分類</span><input name="category" type="text" placeholder="例如：影音播放"></label>
             <label class="wide"><span>App 介紹</span><textarea name="description" rows="3" placeholder="未填會自動產生"></textarea></label>
             <label><span>圖標網址（可留空）</span><input name="iconUrl" type="url" inputmode="url" placeholder="https://..."></label>

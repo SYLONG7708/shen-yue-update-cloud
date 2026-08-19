@@ -72,19 +72,24 @@ export function taipeiTimestamp(date = new Date()) {
 
 export function findExistingItem(manifest, query = {}, apk = {}) {
   if (query.mode === "create") return null;
+  const apps = Array.isArray(manifest.apps) ? manifest.apps : [];
   const itemId = String(query.itemId || "").trim();
   const requestedAsset = safeAssetName(query.assetName || "");
   const packageName = apk.packageName || String(query.packageName || "").trim();
   const appName = String(query.appName || "").trim();
-  return (manifest.apps || []).find((item) => {
-    const currentAsset = safeAssetName(item.apkUrl);
-    return (
-      (itemId && [item.id, item.packageName, item.name, currentAsset].includes(itemId)) ||
-      (requestedAsset && requestedAsset === currentAsset) ||
-      (packageName && packageName === item.packageName) ||
-      (appName && appName === item.name)
-    );
-  }) || null;
+  if (itemId) {
+    const selected = apps.find((item) => [item.id, item.packageName, item.name, safeAssetName(item.apkUrl)].includes(itemId));
+    if (selected) return selected;
+  }
+  if (requestedAsset) {
+    const selected = apps.find((item) => requestedAsset === safeAssetName(item.apkUrl));
+    if (selected) return selected;
+  }
+  if (packageName) {
+    const selected = apps.find((item) => packageName === item.packageName);
+    if (selected) return selected;
+  }
+  return appName ? (apps.find((item) => appName === item.name) || null) : null;
 }
 
 export function buildManifestItem({ existing, apk, metadata = {}, assetName, size, sha256, owner, repo, releaseTag, now = new Date() }) {

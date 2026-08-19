@@ -14,6 +14,8 @@
 6. 同步 `SYLONG7708/update/updates.json`、`SYLONG7708/shen-yue-iphone-assistant/updates.json` 與 Apps Script。
 7. 網頁輪詢工作狀態並顯示完成或錯誤訊息。
 
+替換既有 APK 時，「App 顯示名稱」可直接輸入新名稱；有填寫就同步更新兩份 `updates.json` 與 Apps Script，只有留空才沿用替換前名稱。套件名稱、項目 ID 與 APK 身分仍由雲端工人解析及比對，不會因改顯示名稱而建立重複項目。
+
 GitHub 權杖與管理密碼只存放在 Netlify 環境變數及 GitHub Actions Secrets，不會寫入 Git、HTML 或前端 JavaScript。
 
 ## 必要設定

@@ -66,6 +66,7 @@ legend { margin-bottom: 10px; color: var(--muted); font-size: 13px; font-weight:
 .mode-option small { color: var(--muted); }
 
 label > span { display: block; margin: 0 0 8px; color: #afc6d2; font-size: 13px; font-weight: 700; }
+.field-help { display: block; margin-top: 7px; color: var(--muted); font-size: 12px; line-height: 1.55; }
 input, select, textarea { width: 100%; color: var(--text); border: 1px solid var(--line); border-radius: 12px; background: #08141e; outline: none; }
 input, select { min-height: 46px; padding: 0 13px; }
 textarea { resize: vertical; padding: 12px 13px; }
